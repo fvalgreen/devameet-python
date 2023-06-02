@@ -6,8 +6,7 @@ from .schema import Login, Register
 router = APIRouter()
 
 @router.post('/login')
-async def login(dto: Login):
-  service = AuthServices()
+async def login(dto: Login, service: AuthServices = Depends(AuthServices)):
   return service.login(dto)
 
 @router.post('/register')
