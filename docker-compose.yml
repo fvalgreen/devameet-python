@@ -1,0 +1,26 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: devameet_user
+      POSTGRES_PASSWORD: 3F1j0S4v
+    ports:
+      - 5432:5432
+    volumes:
+      - devameet:/.db
+
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+
+volumes:
+  devameet:
