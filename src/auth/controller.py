@@ -1,7 +1,7 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
 from .service import AuthServices
-from .schema import Login
+from .schema import Login, Register
 
 router = APIRouter()
 
@@ -9,3 +9,7 @@ router = APIRouter()
 async def login(dto: Login):
   service = AuthServices()
   return service.login(dto)
+
+@router.post('/register')
+async def register(dto: Register, service: AuthServices = Depends(AuthServices)):  
+  return service.register(dto)

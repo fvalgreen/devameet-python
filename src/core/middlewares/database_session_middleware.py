@@ -3,7 +3,7 @@ from starlette.requests import Request
 from starlette.responses import Response
 from starlette.types import ASGIApp
 
-from core.database import SessionLocal
+from src.core.database import SessionLocal
 
 class DatabaseSessionMiddleware(BaseHTTPMiddleware):
   def __init__(self, app):
