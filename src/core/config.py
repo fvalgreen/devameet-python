@@ -5,6 +5,7 @@ from pydantic import BaseSettings
 class Settings(BaseSettings):
 
   log_level: str = 'info'
+  db_url: str
 
   class Config:
     env_file = '.env'
