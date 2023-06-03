@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from fastapi import Depends
 from jose import jwt, JWTError
 from fastapi.security import OAuth2PasswordBearer
+from src.core.middlewares.error import ApiError
 
 from src.core.config import get_settings
 
@@ -24,10 +25,10 @@ class TokenHandler:
       username = payload.get('sub')
 
       if username is None:
-        raise Exception('Invalid token')
+        raise ApiError(message='Invalid token', error='TokenError', status_code=401)
       return username
     except JWTError:
-      raise Exception('Invalid token')
+      raise ApiError(message='Invalid token', error='TokenError', status_code=401)
 
 def get_current_user(token: str = Depends(ouath2_schema)):
   return TokenHandler.read_token(token)

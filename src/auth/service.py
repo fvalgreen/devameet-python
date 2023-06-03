@@ -1,9 +1,10 @@
 from fastapi import Depends, HTTPException
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
-from .handler import TokenHandler
 
+from src.core.middlewares.error import ApiError
 from src.core.database import get_db
+from .handler import TokenHandler
 from .model import User
 from .schema import Login, Register, Token
 
@@ -18,9 +19,9 @@ class AuthServices:
     user = self.db.query(User).filter(User.username == dto.login).first()
 
     if not user:
-      raise Exception('Incorrect username or password')
+      raise ApiError(message='Incorrect username or password', error='AuthenticationError', status_code=401)
     if not self.pwd_context.verify(dto.password, user.hashed_password):
-      raise Exception('Incorrect username or password')
+      raise ApiError(message='Incorrect username or password', error='AuthenticationError', status_code=401)
     
     token = TokenHandler.create_access_token(user.username)
     return Token(email=user.username, name=user.name, token=token)
