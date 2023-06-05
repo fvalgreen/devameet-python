@@ -140,4 +140,4 @@ class WebSocketServer:
       'socket': sid
     }
 
-    await self.socket_manager.emir('answer-made', make_answer_dto, to=to)
+    await self.socket_manager.emit('answer-made', make_answer_dto, to=to)
