@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Body, Depends
 
 from src.auth.handler import get_current_user
-from .schema import CreateMeet
+from .schema import CreateMeet, UpdateMeet
 from .service import MeetServices
 
 
@@ -29,4 +29,12 @@ async def get_all(
   service: MeetServices = Depends(MeetServices)):
 
   return service.get_by_id(id)
+
+@router.put('/{id}')
+async def update_meet(
+  id: str,
+  dto: UpdateMeet = Body(embed=False),
+  username: str = Depends(get_current_user), 
+  service: MeetServices = Depends(MeetServices)):  
+  return service.update_meet(id, dto)
 

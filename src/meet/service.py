@@ -3,7 +3,7 @@ from fastapi import Depends
 from src.core.middlewares.error import ApiError
 from src.core.database import SessionLocal, get_db
 from .model import Meet
-from .schema import CreateMeet
+from .schema import CreateMeet, UpdateMeet
 
 
 
@@ -29,3 +29,16 @@ class MeetServices:
     if not meet:
       raise ApiError(message='Cannot find this meet', error='Bad Request', status_code=400)
     return meet
+  
+  def update_meet(self, id, dto: UpdateMeet):
+    meet = self.db.query(Meet).filter(Meet.id == id).first()
+    if not meet:
+      raise ApiError(message='Cannot find this meet', error='Bad Request', status_code=400)
+    
+    meet.name = dto.name
+    meet.color = dto.color
+
+    self.db.commit()
+    self.db.refresh(meet)
+    
+    return(meet)
