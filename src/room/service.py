@@ -1,4 +1,5 @@
 from fastapi import Depends
+from src.core.logger import ApiLogger
 
 from src.meet.model import Meet
 from src.auth.model import User
@@ -51,7 +52,7 @@ class RoomServices:
 
     users_in_room = self.db.query(Position).filter(Position.meet_id == meet.id).all()
 
-    if any(user for users in users_in_room if user.user_id == user_id or user.client_id == client_id):
+    if any(user for user in users_in_room if user.user_id == user_id or user.client_id == client_id):
       position = self.db.query(Position).filter(Position.client_id == client_id).one()
       position.x = dto.x
       position.y = dto.y
@@ -59,8 +60,10 @@ class RoomServices:
     elif len(users_in_room) > 10:
       raise ApiError(message='Meet is full', error='UpdateMeetError', status_code=400)
     else:
-      self.db.position.add(position)
+      self.db.add(position)
     
+    logger = ApiLogger(__name__)
+    logger.debug(f'{position}')
     self.db.commit()
 
 
