@@ -23,3 +23,9 @@ class MeetServices:
   
   def get_all(self):
     return self.db.query(Meet).all()
+  
+  def get_by_id(self, id):
+    meet = self.db.query(Meet).filter(Meet.id == id).first()
+    if not meet:
+      raise ApiError(message='Cannot find this meet', error='Bad Request', status_code=400)
+    return meet

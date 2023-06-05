@@ -22,3 +22,11 @@ async def get_all(
 
   return service.get_all()
 
+@router.get('/{id}')
+async def get_all(
+  id: str,
+  username: str = Depends(get_current_user),
+  service: MeetServices = Depends(MeetServices)):
+
+  return service.get_by_id(id)
+
