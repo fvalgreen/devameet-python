@@ -20,6 +20,7 @@ if config.config_file_name is not None:
 # target_metadata = mymodel.Base.metadata
 from src.core.database import Base
 from src.auth.model import User
+from src.meet.model import Meet
 target_metadata = Base.metadata
 
 
