@@ -4,6 +4,8 @@ from fastapi import Request, Response
 from src.core.database import SessionLocal
 
 class DatabaseSessionMiddleware(BaseHTTPMiddleware):
+  def __init__(self, app):
+    super().__init__(app)
   
   async def dispatch(self, request: Request, call_next: RequestResponseEndpoint):
     response = Response("Internal Server Error", status_code=500)

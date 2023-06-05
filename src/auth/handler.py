@@ -21,7 +21,7 @@ class TokenHandler:
   @staticmethod
   def read_token(token: str):
     try:
-      payload = jwt.decode(token, config.jwt_secret, algorithm=config.jwt_algorithm)
+      payload = jwt.decode(token, config.jwt_secret, algorithms=config.jwt_algorithm)
       username = payload.get('sub')
 
       if username is None:

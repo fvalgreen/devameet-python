@@ -1,7 +1,8 @@
 import traceback
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
-from fastapi import HTTPException, Request, Response
+from fastapi import HTTPException
 from starlette.responses import JSONResponse
+from starlette.requests import Request
 from fastapi.exceptions import RequestValidationError
 import sqlalchemy.exc
 
@@ -17,9 +18,13 @@ class ApiError(Exception):
     return self.message
 
 class ErrorConverterMiddleware(BaseHTTPMiddleware):
+  def __init__(self, app):
+    super().__init__(app)
+    self.app = app
+
   async def dispatch(self, request: Request, call_next: RequestResponseEndpoint):
     try:
-      return await call_next(request)
+      response = await call_next(request)
     except Exception as e:
       logger = ApiLogger(name='ErrorConverterMiddleware')
       traceback.print_exc()
@@ -40,6 +45,7 @@ class ErrorConverterMiddleware(BaseHTTPMiddleware):
         status_code = 404
 
       raise ApiError(message=message, error=error_dict[status_code], status_code=status_code)
+    return response
     
 
 class ErrorHandlerMiddleware(BaseHTTPMiddleware):
