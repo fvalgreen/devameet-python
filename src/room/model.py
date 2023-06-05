@@ -11,6 +11,7 @@ class Position(Base):
   id = Column(Integer, primary_key=True, index=True)
   client_id = Column(String(100), index=True, nullable=False)
   name = Column(String(100), index=True, nullable=False)
+  avatar = Column(String(100), nullable=False)
   x = Column(Integer, nullable=False)
   y = Column(Integer, nullable=False)
   orientation = Column(String, nullable=False, default='front')
