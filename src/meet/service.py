@@ -42,3 +42,13 @@ class MeetServices:
     self.db.refresh(meet)
     
     return(meet)
+
+  def delete_meet(self, id):
+    meet = self.db.query(Meet).filter(Meet.id == id).first()
+    if not meet:
+      raise ApiError(message='Cannot find this meet', error='Bad Request', status_code=400)
+    
+    self.db.delete(meet)
+    self.db.commit()
+
+    return meet
