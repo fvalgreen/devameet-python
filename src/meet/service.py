@@ -20,3 +20,6 @@ class MeetServices:
     self.db.refresh(meet)
 
     return meet
+  
+  def get_all(self):
+    return self.db.query(Meet).all()
