@@ -22,6 +22,7 @@ from src.core.database import Base
 from src.auth.model import User
 from src.meet.model import Meet
 from src.meet.model import ObjectMeet
+from src.room.model import Position
 
 target_metadata = Base.metadata
 

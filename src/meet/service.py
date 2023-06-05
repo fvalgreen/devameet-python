@@ -50,6 +50,7 @@ class MeetServices:
     self.db.refresh(meet)
 
     self.db.query(ObjectMeet).filter(ObjectMeet.meet_id == id).delete()
+    self.db.commit()
     
 
     new_objects = [
