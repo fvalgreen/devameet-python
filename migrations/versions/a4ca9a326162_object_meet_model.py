@@ -25,7 +25,7 @@ def upgrade() -> None:
     sa.Column('y', sa.Integer(), nullable=False),
     sa.Column('z_index', sa.Integer(), nullable=False),
     sa.Column('orientation', sa.String(), nullable=False),
-    sa.Column('meet_id', sa.String(), nullable=False),
+    sa.Column('meet_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['meet_id'], ['meets.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
