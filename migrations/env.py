@@ -21,6 +21,8 @@ if config.config_file_name is not None:
 from src.core.database import Base
 from src.auth.model import User
 from src.meet.model import Meet
+from src.meet.model import ObjectMeet
+
 target_metadata = Base.metadata
 
 
