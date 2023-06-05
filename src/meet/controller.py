@@ -23,7 +23,7 @@ async def get_all(
   return service.get_all()
 
 @router.get('/{id}')
-async def get_all(
+async def get_by_id(
   id: str,
   username: str = Depends(get_current_user),
   service: MeetServices = Depends(MeetServices)):
@@ -41,4 +41,12 @@ async def update_meet(
 @router.delete('/{id}')
 async def delete_meet(id: str, username: str = Depends(get_current_user), service: MeetServices =  Depends(MeetServices)):
   return service.delete_meet(id)
+
+@router.get('/{id}/object')
+async def get_objects(
+  id: str,
+  username: str = Depends(get_current_user),
+  service: MeetServices = Depends(MeetServices)):
+
+  return service.get_objects(id)
 
