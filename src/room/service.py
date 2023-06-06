@@ -6,7 +6,7 @@ from src.auth.model import User
 from src.core.middlewares.error import ApiError
 from src.core.database import SessionLocal, get_db
 from .model import Position
-from .schema import UpdatePosition, ToggleMute
+from .schema import CreateUserPosition, UpdatePosition, ToggleMute
 
 
 
@@ -38,6 +38,39 @@ class RoomServices:
     meet = self.__get_meet(link)
     user = self.db.query(User).filter(User.id == user_id).first()
 
+    position = self.db.query(Position).filter(Position.client_id == client_id).one()    
+    
+    if dto.direction == 'right':
+      if position.orientation == 'right':
+        if position.x < 7:
+          position.x += 1 
+      else:
+        position.orientation = 'right'
+    elif dto.direction == 'left':
+      if position.orientation == 'left':
+        if position.x > 0:
+          position.x -= 1 
+      else:
+        position.orientation = 'left'
+    elif dto.direction == 'up':
+      if position.orientation == 'back':
+        if position.y > 0:
+          position.y -= 1 
+      else:
+        position.orientation = 'back'
+    elif dto.direction == 'down':
+      if position.orientation == 'front':
+        if position.y < 7:
+          position.y += 1 
+      else:
+        position.orientation = 'front'
+
+    self.db.commit()
+
+  def create_user_position(self, user_id, link, client_id, dto: CreateUserPosition):
+    meet = self.__get_meet(link)
+    user = self.db.query(User).filter(User.id == user_id).first()
+    
     position = Position(
       x = dto.x,
       y = dto.y,
@@ -52,15 +85,9 @@ class RoomServices:
 
     users_in_room = self.db.query(Position).filter(Position.meet_id == meet.id).all()
 
-    if any(user for user in users_in_room if user.user_id == user_id or user.client_id == client_id):
-      position = self.db.query(Position).filter(Position.client_id == client_id).one()
-      position.x = dto.x
-      position.y = dto.y
-      position.orientation = dto.orientation
-    elif len(users_in_room) > 10:
-      raise ApiError(message='Meet is full', error='UpdateMeetError', status_code=400)
-    else:
-      self.db.add(position)
+    if len(users_in_room) > 10:
+      raise ApiError(message='Meet is full', error='UpdateMeetError', status_code=400)    
+    self.db.add(position)
     
     logger = ApiLogger(__name__)
     logger.debug(f'{position}')
