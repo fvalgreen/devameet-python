@@ -13,7 +13,7 @@ async def create_meet(
   username: str = Depends(get_current_user),
   service: MeetServices = Depends(MeetServices)):
 
-  return service.create_meet(dto)
+  return service.create_meet(dto, username)
 
 @router.get('/')
 async def get_all(
