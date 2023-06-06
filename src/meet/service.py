@@ -12,8 +12,8 @@ class MeetServices:
     
     self.db = db
   
-  def create_meet(self, dto: CreateMeet):
-    meet = Meet(name=dto.name, color=dto.color)
+  def create_meet(self, dto: CreateMeet, username):
+    meet = Meet(name=dto.name, color=dto.color, owner = username )
 
     self.db.add(meet)
     self.db.commit()

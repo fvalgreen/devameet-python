@@ -13,6 +13,7 @@ class Meet(Base):
   name = Column(String(100), index=True, nullable=False)
   color = Column(String(7), nullable=False, default='#000000')
   link = Column(String(100), index=True, nullable=False)
+  owner = Column(String(100), index=True, nullable=False)
 
   object_meets = relationship('ObjectMeet', back_populates='meet')
 
