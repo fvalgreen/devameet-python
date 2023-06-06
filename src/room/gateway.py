@@ -106,11 +106,14 @@ class WebSocketServer:
     link = data['link']
     user_id = data['userId']
     muted = data['muted']
+    user_to_mute = data['userToMute']
+    
 
     dto = ToggleMute(
       user_id=user_id,
       muted=muted,
-      link=link
+      link=link,
+      user_to_mute=user_to_mute
     )
 
     with SessionLocal() as db_connection:
